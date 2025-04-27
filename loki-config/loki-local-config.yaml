@@ -1,0 +1,30 @@
+server:
+  http_listen_port: 3100
+  http_grpc_read_timeout: 10s
+  http_grpc_write_timeout: 10s
+
+ingester:
+  chunk_idle_period: 5m
+  chunk_target_size: 153600
+  max_chunk_age: 1h
+  max_outstanding_chunks: 5000
+
+schema_config:
+  configs:
+    - from: 2020-10-24
+      store: boltdb-shipper
+      object_store: filesystem
+      schema: v11
+      index:
+        prefix: index_
+        period: 168h
+
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /tmp/loki/index
+    cache_location: /tmp/loki/cache
+  filesystem:
+    directory: /tmp/loki/chunks
+
+limits_config:
+  enforce_metric_name: false
